@@ -12,7 +12,7 @@ namespace Core
     {
         public static ObservableCollection<User> GetUsers()
         {
-            return new ObservableCollection<User>(DBconnection.connection.Users);
+            return new ObservableCollection<User>(ShopBozyaEntities.GetContext().Users);
         }
 
         public static User GetUser(int id)
@@ -39,8 +39,8 @@ namespace Core
                 RoleId = GetRole("Клиент").Id
             };
 
-            DBconnection.connection.Users.Add(user);
-            return Convert.ToBoolean(DBconnection.connection.SaveChanges());
+            ShopBozyaEntities.GetContext().Users.Add(user);
+            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
         }
 
 
@@ -61,7 +61,7 @@ namespace Core
 
         public static ObservableCollection<Role> GetRoles()
         {
-            return new ObservableCollection<Role>(DBconnection.connection.Roles);
+            return new ObservableCollection<Role>(ShopBozyaEntities.GetContext().Roles);
         }
 
         public static Role GetRole(int id)
@@ -77,7 +77,7 @@ namespace Core
 
         public static ObservableCollection<Product> GetProducts()
         {
-            return new ObservableCollection<Product>(DBconnection.connection.Products);
+            return new ObservableCollection<Product>(ShopBozyaEntities.GetContext().Products);
         }
     }
 }

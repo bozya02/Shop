@@ -19,6 +19,11 @@
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="Margin" Value="20"/>
         </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Margin" Value="20"/>
+        </Style>
         <Style TargetType="ListView">
             <Setter Property="FontFamily" Value="Arial"/>
             <Setter Property="FontSize" Value="24"/>

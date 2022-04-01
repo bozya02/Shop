@@ -57,7 +57,6 @@
       <DependentUpon>ShopModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess.cs" />
-    <Compile Include="DBconnection.cs" />
     <Compile Include="Gender.cs">
       <DependentUpon>ShopModel.tt</DependentUpon>
     </Compile>

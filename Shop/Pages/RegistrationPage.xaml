@@ -28,7 +28,7 @@
         <TextBox x:Name="tbLogin" Grid.Column="1" Grid.Row="1"/>
 
         <TextBlock Text="Password" Grid.Column="0" Grid.Row="2"/>
-        <TextBox x:Name="tbPassword" Grid.Column="1" Grid.Row="2"/>
+        <PasswordBox x:Name="tbPassword" Grid.Column="1" Grid.Row="2"/>
 
         <Button x:Name="btnRegistration" Content="Registration" Grid.ColumnSpan="2" Grid.Row="3" Click="btnRegistration_Click"/>
     </Grid>
