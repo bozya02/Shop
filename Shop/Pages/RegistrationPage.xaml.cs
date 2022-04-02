@@ -34,7 +34,7 @@ namespace Shop.Pages
         private void btnRegistration_Click(object sender, RoutedEventArgs e)
         {
             var login = tbLogin.Text;
-            var passwrod = tbPassword.Password;
+            var passwrod = pbPassword.Password;
 
             if (!DataAccess.CheckLogin(login))
             {

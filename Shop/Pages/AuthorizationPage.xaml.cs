@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Core;
 
 namespace Shop.Pages
 {
@@ -23,12 +24,31 @@ namespace Shop.Pages
         public AuthorizationPage()
         {
             InitializeComponent();
+
+            tbLogin.Text = Properties.Settings.Default.Login;
         }
 
         private void btnRegistration_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new ProductsPage());
-            //NavigationService.Navigate(new RegistrationPage());
+            NavigationService.Navigate(new RegistrationPage());
+        }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            var login = tbLogin.Text;
+            var password = pbPassword.Password;
+
+            if (DataAccess.TryLogin(login, password))
+            {
+                if (cbRemember.IsChecked.GetValueOrDefault())
+                    Properties.Settings.Default.Login = login;
+                else
+                    Properties.Settings.Default.Login = null;
+                Properties.Settings.Default.Save();
+                NavigationService.Navigate(new ProductsPage());
+            }
+            else
+                MessageBox.Show("Неверный логин или пароль", "Ошибка");
         }
     }
 }

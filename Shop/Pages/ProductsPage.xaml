@@ -26,26 +26,26 @@
         <Image />
         <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
-                <DataGridTemplateColumn Header="Photo">
+                <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" />
+                <DataGridTemplateColumn Header="Фото">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Image Source="{Binding Photo}" Width="100"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                <DataGridTextColumn Header="Add date" Binding="{Binding AddDate}"/>
-                <DataGridTextColumn Header="Unit" Binding="{Binding Unit.Name}"/>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Комментарий" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Дата добавления" Binding="{Binding AddDate}"/>
+                <DataGridTextColumn Header="Единица измерения" Binding="{Binding Unit.Name}"/>
 
-                <DataGridTemplateColumn Header="Countries">
+                <DataGridTemplateColumn Header="Страны-поставщики">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ListView ItemsSource="{Binding ProductCountries}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Country.Name}" Background="{Binding Country.Color}" TextAlignment="Center"/>
+                                        <TextBlock Text="{Binding Country.Name}" Background="{Binding Country.Color}"/>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>

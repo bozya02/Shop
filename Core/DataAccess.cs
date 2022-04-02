@@ -27,7 +27,7 @@ namespace Core
 
         public static bool TryLogin(string login, string password)
         {
-            return GetUsers().Where(user => user.Login == login && user.Password == password).Count() == 1;
+            return GetUser(login, password) != null;
         }
 
         public static bool RegistartionUser(string login, string password)
