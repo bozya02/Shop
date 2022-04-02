@@ -79,5 +79,10 @@ namespace Core
         {
             return new ObservableCollection<Product>(ShopBozyaEntities.GetContext().Products);
         }
+
+        public static ObservableCollection<Unit> GetUnits()
+        {
+            return new ObservableCollection<Unit>(ShopBozyaEntities.GetContext().Units);
+        }
     }
 }

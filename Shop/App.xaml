@@ -18,11 +18,13 @@
             <Setter Property="FontFamily" Value="Arial"/>
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="Margin" Value="20"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="PasswordBox">
             <Setter Property="FontFamily" Value="Arial"/>
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="Margin" Value="20"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="ListView">
             <Setter Property="FontFamily" Value="Arial"/>

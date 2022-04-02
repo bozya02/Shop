@@ -23,8 +23,18 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <Image />
-        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False">
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="10, 0"/>
+        </StackPanel>
+
+        <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding ProductsForSearch}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" />
                 <DataGridTemplateColumn Header="Фото">

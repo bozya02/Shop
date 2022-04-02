@@ -20,16 +20,17 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Button x:Name="btnGoBack" Content="Go back" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btnGoBack_Click"/>
-        
-        <TextBlock Text="Registartion" Grid.ColumnSpan="2" Grid.Row="0" FontSize="36"/>
+        <Button x:Name="btnGoBack" Content="Назад" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="btnGoBack_Click"/>
+        <Button x:Name="btnGoForward" Content="Вперед" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Click="btnGoForward_Click"/>
 
-        <TextBlock Text="Login" Grid.Column="0" Grid.Row="1"/>
+        <TextBlock Text="Регистрация" Grid.ColumnSpan="2" Grid.Row="0" FontSize="36"/>
+
+        <TextBlock Text="Логин" Grid.Column="0" Grid.Row="1"/>
         <TextBox x:Name="tbLogin" Grid.Column="1" Grid.Row="1"/>
 
-        <TextBlock Text="Password" Grid.Column="0" Grid.Row="2"/>
+        <TextBlock Text="Пароль" Grid.Column="0" Grid.Row="2"/>
         <PasswordBox x:Name="pbPassword" Grid.Column="1" Grid.Row="2"/>
 
-        <Button x:Name="btnRegistration" Content="Registration" Grid.ColumnSpan="2" Grid.Row="3" Click="btnRegistration_Click"/>
+        <Button x:Name="btnRegistration" Content="Зарегистрироваться" Grid.ColumnSpan="2" Grid.Row="3" Click="btnRegistration_Click"/>
     </Grid>
 </Page>
