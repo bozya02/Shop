@@ -38,6 +38,20 @@
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Add date" Binding="{Binding AddDate}"/>
                 <DataGridTextColumn Header="Unit" Binding="{Binding Unit.Name}"/>
+
+                <DataGridTemplateColumn Header="Countries">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListView ItemsSource="{Binding ProductCountries}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Country.Name}" Background="{Binding Country.Color}" TextAlignment="Center"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
