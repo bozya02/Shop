@@ -29,7 +29,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Grid.Column="0" SelectedIndex="0">
+            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Grid.Column="0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"/>
@@ -43,7 +43,7 @@
             </ComboBox>
         </Grid>
 
-        <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding ProductsForSearch}" IsReadOnly="True" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" />
                 <DataGridTemplateColumn Header="Фото">
@@ -74,9 +74,9 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center">
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button x:Name="btnAdd" Content="Добавить" FontSize="16" Margin="5"/>
-            <Button x:Name="btnEdit" Content="Изменить" FontSize="16" Margin="5"/>
+            <Button x:Name="btnEdit" Content="Изменить" FontSize="16" Margin="5" Click="btnEdit_Click"/>
             <Button x:Name="btnDelete" Content="Удалить" FontSize="16" Margin="5" Click="btnDelete_Click"/>
         </StackPanel>
     </Grid>

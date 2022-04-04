@@ -28,7 +28,7 @@
         <TextBlock Text="Пароль" Grid.Column="0" Grid.Row="2"/>
         <PasswordBox x:Name="pbPassword" Grid.Column="1" Grid.Row="2"/>
 
-        <StackPanel Grid.ColumnSpan="2" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button x:Name="btnLogin" Content="Войти" Click="btnLogin_Click"/>
             <Button x:Name="btnRegistration" Content="Зарегистрироваться" Click="btnRegistration_Click"/>
             <CheckBox x:Name="cbRemember" Content="Запомнить данные" IsChecked="True"/>
