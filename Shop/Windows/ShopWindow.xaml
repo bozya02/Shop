@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shop"
         mc:Ignorable="d"
-        Title="Shop" Height="450" Width="800">
+        Title="Shop" Height="585" Width="800">
     <Grid>
-        <Frame x:Name="frame" NavigationUIVisibility="Hidden"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Image Source="/Shop;component/Resources/logo.jpg" HorizontalAlignment="Left"/>
+
+        <TextBlock Text="SHOP bozya02" FontSize="40"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnGoBack" Content="Назад" HorizontalAlignment="Left" Click="btnGoBack_Click" Margin="5"/>
+            <Button x:Name="btnGoForward" Content="Вперед" HorizontalAlignment="Right" Click="btnGoForward_Click" Margin="5"/>
+        </StackPanel>
+        
+        <Frame x:Name="frame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

@@ -80,6 +80,12 @@ namespace Core
             return new ObservableCollection<Product>(ShopBozyaEntities.GetContext().Products);
         }
 
+        public static bool DeleteProduct(Product product)
+        {
+            ShopBozyaEntities.GetContext().Products.Remove(product);
+            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+        }
+
         public static ObservableCollection<Unit> GetUnits()
         {
             return new ObservableCollection<Unit>(ShopBozyaEntities.GetContext().Units);

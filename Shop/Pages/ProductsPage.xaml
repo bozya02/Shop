@@ -23,16 +23,25 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged">
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Grid.Column="0" SelectedIndex="0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="10, 0"/>
-        </StackPanel>
+            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="10" Grid.Column="1"/>
+            <ComboBox x:Name="cbMonth" Grid.Column="2" SelectionChanged="cbMonth_SelectionChanged">
+                <ComboBoxItem Content="Все"/>
+                <ComboBoxItem Content="Текущий месяц"/>
+            </ComboBox>
+        </Grid>
 
         <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding ProductsForSearch}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -64,5 +73,11 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center">
+            <Button x:Name="btnAdd" Content="Добавить" FontSize="16" Margin="5"/>
+            <Button x:Name="btnEdit" Content="Изменить" FontSize="16" Margin="5"/>
+            <Button x:Name="btnDelete" Content="Удалить" FontSize="16" Margin="5" Click="btnDelete_Click"/>
+        </StackPanel>
     </Grid>
 </Page>
