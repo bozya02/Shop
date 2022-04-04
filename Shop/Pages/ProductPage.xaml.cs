@@ -43,7 +43,6 @@ namespace Shop.Pages
             Product.Name = tbName.Text;
             Product.UnitId = (cbUnits.SelectedItem as Unit).Id;
             Product.Description = tbDescription.Text;
-            Product.AddDate = DateTime.Now;
             DataAccess.AddOrEditProduct(Product);
         }
     }

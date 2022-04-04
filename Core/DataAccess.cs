@@ -83,7 +83,10 @@ namespace Core
         public static bool AddOrEditProduct(Product product)
         {
             if (GetProducts().Where(p => p.Id == product.Id).Count() == 0)
+            {
+                product.AddDate = DateTime.Now;
                 ShopBozyaEntities.GetContext().Products.Add(product);
+            }
             else
                 ShopBozyaEntities.GetContext().Products.SingleOrDefault(p => p.Id == product.Id);
 
