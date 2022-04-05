@@ -35,7 +35,7 @@ namespace Shop.Pages
         }
         private void Apply()
         {
-            try 
+            if (cbMonth.SelectedItem != null && cbUnits.SelectedItem != null)
             {
                 var unit = cbUnits.SelectedItem as Unit;
                 if (unit.Name == "Все")
@@ -54,8 +54,6 @@ namespace Shop.Pages
                 dgProducts.ItemsSource = Products;
                 IsSearchNotNull(Products);
             }
-            catch
-            { }
         }
 
         private void cbUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
