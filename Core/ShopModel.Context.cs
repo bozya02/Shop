@@ -21,12 +21,11 @@ namespace Core
             : base("name=ShopBozyaEntities")
         {
         }
-    
+
         public static ShopBozyaEntities GetContext()
         {
             if (_context == null)
                 _context = new ShopBozyaEntities();
-
             return _context;
         }
 

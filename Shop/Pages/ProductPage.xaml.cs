@@ -26,15 +26,42 @@ namespace Shop.Pages
         public Product Product { get; set; }
         public List<Country> ProductCountries { get; set; }
         public List<Country> Countries { get; set; }
+        public List<Unit> Units { get; set; }
+
+        public ProductPage()
+        {
+            InitializeComponent();
+
+            Product = new Product();
+            Countries = DataAccess.GetCountries().ToList();
+            Units = DataAccess.GetUnits().ToList();
+
+            FillCountries();
+
+            cbCounties.ItemsSource = Countries;
+            lvCountries.ItemsSource = ProductCountries;
+
+            cbUnits.ItemsSource = Units;
+
+            spId.Visibility = Visibility.Hidden;
+            this.DataContext = Product;
+        }
 
         public ProductPage(Product product)
         {
             InitializeComponent();
+
             Product = product;
             Countries = DataAccess.GetCountries().ToList();
+            Units = DataAccess.GetUnits().ToList();
+
             FillCountries();
+
             cbCounties.ItemsSource = Countries;
             lvCountries.ItemsSource = ProductCountries;
+
+            cbUnits.ItemsSource = Units;
+            cbUnits.SelectedItem = Product.Unit;
 
             this.DataContext = Product;
         }
@@ -42,7 +69,7 @@ namespace Shop.Pages
         private void FillCountries()
         {
             ProductCountries = new List<Country>();
-            var productCountries = Product.ProductCountries.Where(p => p.ProductId == Product.Id).ToList();
+            var productCountries = Product.ProductCountries.Where(p => p.ProductId == Product.Id && !p.IsDeleted).ToList();
             foreach (var country in productCountries)
             {
                 ProductCountries.Add(Countries.Where(c => c.Id == country.CountryId).FirstOrDefault());
@@ -51,10 +78,10 @@ namespace Shop.Pages
 
         private void btnComplete_Click(object sender, RoutedEventArgs e)
         {
-            Product.Name = tbName.Text;
             Product.UnitId = (cbUnits.SelectedItem as Unit).Id;
-            Product.Description = tbDescription.Text;
-            //DataAccess.SaveProduct(Product);
+            DataAccess.SaveProduct(Product);
+            DataAccess.SaveProductCountries(Product.Id, lvCountries.Items.Cast<Country>().ToList());
+            NavigationService.GoBack();
         }
 
         private void btnChoicePhoto_Click(object sender, RoutedEventArgs e)
@@ -73,11 +100,16 @@ namespace Shop.Pages
 
         private void lvCountries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             var countries = lvCountries.Items.Cast<Country>().ToList();
             var productCountry = lvCountries.SelectedItem as Country;
+            var id = productCountry.Id;
+            if (Product.Id > 0)
+                DataAccess.RemoveProductCounrtry(Product.Id, id);
             countries.Remove(productCountry);
 
             lvCountries.ItemsSource = countries;
+            */
         }
 
         private void cbCounties_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -88,6 +120,18 @@ namespace Shop.Pages
             if (countries.Where(c => c.Name == productCountry.Name).Count() != 0)
                 return;
             countries.Add(productCountry);
+
+            lvCountries.ItemsSource = countries;
+        }
+
+        private void tbCountry_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var countries = lvCountries.Items.Cast<Country>().ToList();
+            var productCountry = lvCountries.SelectedItem as Country;
+            bool boolResult = true;
+            if (Product.Id > 0)
+                boolResult = DataAccess.RemoveProductCounrtry(Product.Id, productCountry.Id);
+            countries.Remove(productCountry);
 
             lvCountries.ItemsSource = countries;
         }

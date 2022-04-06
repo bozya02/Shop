@@ -154,5 +154,10 @@ namespace Shop.Pages
                 return;
             NavigationService.Navigate(new ProductPage(product));
         }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ProductPage());
+        }
     }
 }

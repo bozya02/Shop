@@ -75,7 +75,7 @@
         </DataGrid>
 
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="btnAdd" Content="Добавить" FontSize="16" Margin="5"/>
+            <Button x:Name="btnAdd" Content="Добавить" FontSize="16" Margin="5" Click="btnAdd_Click"/>
             <Button x:Name="btnEdit" Content="Изменить" FontSize="16" Margin="5" Click="btnEdit_Click"/>
             <Button x:Name="btnDelete" Content="Удалить" FontSize="16" Margin="5" Click="btnDelete_Click"/>
         </StackPanel>
