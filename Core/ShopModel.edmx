@@ -65,7 +65,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CountryId" Type="int" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductIntake">
           <Key>
@@ -625,7 +624,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CountryId" Type="Int32" Nullable="false" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Country" Relationship="ShopBozyaModel.FK_ProductCountry_Country" FromRole="ProductCountry" ToRole="Country" />
           <NavigationProperty Name="Product" Relationship="ShopBozyaModel.FK_ProductCountry_Product" FromRole="ProductCountry" ToRole="Product" />
         </EntityType>
@@ -1018,7 +1016,6 @@
           <EntitySetMapping Name="ProductCountries">
             <EntityTypeMapping TypeName="ShopBozyaModel.ProductCountry">
               <MappingFragment StoreEntitySet="ProductCountry">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

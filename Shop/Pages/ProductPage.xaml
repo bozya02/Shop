@@ -60,7 +60,7 @@
             <ListView x:Name="lvCountries" Height="150" SelectionChanged="lvCountries_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" Background="{Binding Color}" MouseLeftButtonUp="tbCountry_MouseLeftButtonUp"/>
+                        <TextBlock Text="{Binding Name}" Background="{Binding Color}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

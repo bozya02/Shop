@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
 using Core;
+using System.Text.RegularExpressions;
 
 namespace Shop.Pages
 {
@@ -69,16 +70,21 @@ namespace Shop.Pages
         private void FillCountries()
         {
             ProductCountries = new List<Country>();
-            var productCountries = Product.ProductCountries.Where(p => p.ProductId == Product.Id && !p.IsDeleted).ToList();
+            var productCountries = DataAccess.GetProductCountries(Product);
+
             foreach (var country in productCountries)
             {
-                ProductCountries.Add(Countries.Where(c => c.Id == country.CountryId).FirstOrDefault());
+                ProductCountries.Add(DataAccess.GetCountry(country.CountryId));
             }
         }
 
         private void btnComplete_Click(object sender, RoutedEventArgs e)
         {
             Product.UnitId = (cbUnits.SelectedItem as Unit).Id;
+            if (!DataAccess.CheckContent(Product.Name, Product.Description))
+            {
+                MessageBox.Show();
+            }
             DataAccess.SaveProduct(Product);
             DataAccess.SaveProductCountries(Product.Id, lvCountries.Items.Cast<Country>().ToList());
             NavigationService.GoBack();
@@ -100,16 +106,15 @@ namespace Shop.Pages
 
         private void lvCountries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*
+
             var countries = lvCountries.Items.Cast<Country>().ToList();
             var productCountry = lvCountries.SelectedItem as Country;
-            var id = productCountry.Id;
-            if (Product.Id > 0)
-                DataAccess.RemoveProductCounrtry(Product.Id, id);
+            if (Product.Id > 0 && productCountry != null)
+                DataAccess.RemoveProductCounrtry(Product.Id, productCountry.Id);
             countries.Remove(productCountry);
 
             lvCountries.ItemsSource = countries;
-            */
+
         }
 
         private void cbCounties_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -120,18 +125,6 @@ namespace Shop.Pages
             if (countries.Where(c => c.Name == productCountry.Name).Count() != 0)
                 return;
             countries.Add(productCountry);
-
-            lvCountries.ItemsSource = countries;
-        }
-
-        private void tbCountry_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            var countries = lvCountries.Items.Cast<Country>().ToList();
-            var productCountry = lvCountries.SelectedItem as Country;
-            bool boolResult = true;
-            if (Product.Id > 0)
-                boolResult = DataAccess.RemoveProductCounrtry(Product.Id, productCountry.Id);
-            countries.Remove(productCountry);
 
             lvCountries.ItemsSource = countries;
         }

@@ -45,7 +45,7 @@ namespace Shop.Pages
                 else
                     Properties.Settings.Default.Login = null;
                 Properties.Settings.Default.Save();
-                NavigationService.Navigate(new ProductsPage());
+                NavigationService.Navigate(new ProductsPage(DataAccess.GetUser(login, password).RoleId));
             }
             else
                 MessageBox.Show("Неверный логин или пароль", "Ошибка");

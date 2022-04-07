@@ -16,7 +16,6 @@ namespace Core
     public partial class ShopBozyaEntities : DbContext
     {
         private static ShopBozyaEntities _context;
-
         public ShopBozyaEntities()
             : base("name=ShopBozyaEntities")
         {
@@ -26,9 +25,10 @@ namespace Core
         {
             if (_context == null)
                 _context = new ShopBozyaEntities();
+
             return _context;
         }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

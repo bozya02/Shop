@@ -23,27 +23,31 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Grid.Column="0">
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Width="100" Margin="10,0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="10" Grid.Column="1"/>
-            <ComboBox x:Name="cbMonth" Grid.Column="2" SelectionChanged="cbMonth_SelectionChanged">
+            
+            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="10" Width="150"/>
+            
+            <ComboBox x:Name="cbMonth" Grid.Column="2" SelectionChanged="cbMonth_SelectionChanged" Width="150" Margin="10,0">
                 <ComboBoxItem Content="Все"/>
                 <ComboBoxItem Content="Текущий месяц"/>
             </ComboBox>
-        </Grid>
 
-        <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False">
+            <ComboBox x:Name="cbSort" Grid.Column="2" SelectionChanged="cbSort_SelectionChanged" Width="150" Margin="10,0">
+                <ComboBoxItem Content="А-Я"/>
+                <ComboBoxItem Content="Я-А"/>
+                <ComboBoxItem Content="Сначала старые"/>
+                <ComboBoxItem Content="Сначала новые"/>
+            </ComboBox>
+        </StackPanel>
+
+        <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False" FontSize="16">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" />
                 <DataGridTemplateColumn Header="Фото">
@@ -53,12 +57,12 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Комментарий" Binding="{Binding Description}"/>
-                <DataGridTextColumn Header="Дата добавления" Binding="{Binding AddDate}"/>
-                <DataGridTextColumn Header="Единица измерения" Binding="{Binding Unit.Name}"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Коммент" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding AddDate}"/>
+                <DataGridTextColumn Header="Ед. измерения" Binding="{Binding Unit.Name}"/>
 
-                <DataGridTemplateColumn Header="Страны-поставщики">
+                <DataGridTemplateColumn Header="Страны">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ListView ItemsSource="{Binding ProductCountries}">
@@ -73,11 +77,23 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        
+        <TextBlock x:Name="tbCount" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"/>
+        <StackPanel x:Name="spButtons" Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button x:Name="btnAdd" Content="Добавить" FontSize="16" Margin="5" Click="btnAdd_Click"/>
             <Button x:Name="btnEdit" Content="Изменить" FontSize="16" Margin="5" Click="btnEdit_Click"/>
             <Button x:Name="btnDelete" Content="Удалить" FontSize="16" Margin="5" Click="btnDelete_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Button x:Name="btnPreviousPage" Content="&lt;" Margin="5" Click="btnPreviousPage_Click"/>
+            <Button x:Name="btnNextPage" Content="&gt;" Margin="5" Click="btnNextPage_Click"/>
+            <ComboBox x:Name="cbCountPerPage" SelectionChanged="cbCountPerPage_SelectionChanged" Width="60">
+                <ComboBoxItem>10</ComboBoxItem>
+                <ComboBoxItem>50</ComboBoxItem>
+                <ComboBoxItem>200</ComboBoxItem>
+                <ComboBoxItem>Все</ComboBoxItem>
+            </ComboBox>
         </StackPanel>
     </Grid>
 </Page>

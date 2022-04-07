@@ -23,79 +23,80 @@ namespace Shop.Pages
     {
         public ObservableCollection<Unit> Units { get; set; }
         public List<Product> Products { get; set; }
-        public ProductsPage()
+        public List<Product> ProductsForSearch { get; set; }
+
+        private Dictionary<string, Func<Product, object>> Sortings;
+
+        private int startIndex;
+        private int countPerPage;
+
+        public ProductsPage(int roleId)
         {
             InitializeComponent();
             Products = DataAccess.GetProducts().ToList();
             Units = DataAccess.GetUnits();
-            Units.Add(new Unit { Name = "Все"});
+            Units.Add(new Unit { Name = "Все" });
+            cbCountPerPage.SelectedIndex = 0;
+            countPerPage = Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
+
             cbMonth.SelectedIndex = 0;
             cbUnits.SelectedIndex = Units.Count() - 1;
+            cbSort.SelectedIndex = 0;
+
+            startIndex = 0;
+
+            Sortings = new Dictionary<string, Func<Product, object>>
+            {
+                { "А-Я", x => x.Name},
+                { "Я-А", x => x.Name},
+                { "Сначала старые", x => x.AddDate},
+                { "Сначала новые", x => x.AddDate}
+            };
+
             this.DataContext = this;
+            CheckRole(roleId);
         }
         private void Apply()
         {
-            if (cbMonth.SelectedItem != null && cbUnits.SelectedItem != null)
+            ProductsForSearch = Products.ToList();
+            if (cbMonth.SelectedItem != null && cbUnits.SelectedItem != null && cbSort.SelectedItem != null)
             {
                 var unit = cbUnits.SelectedItem as Unit;
-                if (unit.Name == "Все")
-                    Products = DataAccess.GetProducts().ToList();
-                else
-                    Products = DataAccess.GetProducts().Where(p => p.UnitId == unit.Id).ToList();
+                if (unit.Name != "Все")
+                    ProductsForSearch = Products.Where(p => p.UnitId == unit.Id).ToList();
 
                 var text = tbSearch.Text;
-                Products = Products.Where(p => p.Name.ToLower().Contains(text.ToLower()) || p.Description.ToLower().Contains(text.ToLower())).ToList();
+                ProductsForSearch = ProductsForSearch.Where(p => p.Name.ToLower().Contains(text.ToLower()) || p.Description.ToLower().Contains(text.ToLower())).ToList();
 
                 if ((cbMonth.SelectedItem as ComboBoxItem).Content.ToString() != "Все")
                 {
-                    Products = Products.Where(p => p.AddDate.Month == DateTime.Now.Month).ToList();
+                    ProductsForSearch = ProductsForSearch.Where(p => p.AddDate.Month == DateTime.Now.Month).ToList();
                 }
 
-                dgProducts.ItemsSource = Products;
-                IsSearchNotNull(Products);
+                var sort = (cbSort.SelectedItem as ComboBoxItem).Content.ToString();
+
+                ProductsForSearch = ProductsForSearch.OrderBy(Sortings[sort]).ToList();
+                if (sort == "Я-А" || sort == "Сначала новые")
+                    ProductsForSearch.Reverse();
+
+                dgProducts.ItemsSource = ProductsForSearch;
             }
+            Pagination();
         }
 
         private void cbUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Apply();
-            //var unit = cbUnits.SelectedItem as Unit;
-            //if (unit.Name == "Все")
-            //    ProductsForSearch = Products.ToList();
-            //else
-            //    ProductsForSearch = Products.Where(p => p.UnitId == unit.Id).ToList();
-
-            //dgProducts.ItemsSource = ProductsForSearch;
-            //IsSearchNotNull(ProductsForSearch);
         }
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             Apply();
-            //var text = tbSearch.Text;
-            //var search = ProductsForSearch.Where(p => p.Name.ToLower().Contains(text.ToLower()) || p.Description.ToLower().Contains(text.ToLower())).ToList();
-            //ProductsForSearch = search;
-            
-
-            //dgProducts.ItemsSource = ProductsForSearch;
-            //IsSearchNotNull(ProductsForSearch);
         }
 
         private void cbMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Apply();
-            //if ((cbMonth.SelectedItem as ComboBoxItem).Content.ToString() == "Все")
-            //{
-            //    ProductsForSearch = Products.ToList();
-            //}
-            //else
-            //{
-            //    var search = ProductsForSearch.Where(p => p.AddDate.Month == DateTime.Now.Month).ToList();
-            //    ProductsForSearch = search;
-            //}
-            
-            //dgProducts.ItemsSource = ProductsForSearch;
-            //IsSearchNotNull(ProductsForSearch);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -110,7 +111,7 @@ namespace Shop.Pages
                 if (result == MessageBoxResult.Yes)
                     DataAccess.DeleteProduct(product);
             }
-
+            Products = DataAccess.GetProducts().ToList();
             Apply();
         }
 
@@ -158,6 +159,59 @@ namespace Shop.Pages
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new ProductPage());
+        }
+
+        private void cbSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Apply();
+        }
+
+        private void cbCountPerPage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString() != "Все")
+            {
+                countPerPage = Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
+            }
+            else
+            {
+                countPerPage = Products.Count;
+            }
+            startIndex = 0;
+
+            Apply();
+            Pagination();
+        }
+
+        private void Pagination()
+        {
+            if (startIndex < ProductsForSearch.Count)
+            {
+                int count = (ProductsForSearch.Count / (countPerPage + startIndex)) > 0 ? countPerPage : ProductsForSearch.Count % countPerPage;
+                var result = ProductsForSearch.GetRange(startIndex, count);
+                dgProducts.ItemsSource = result;
+            }
+
+            tbCount.Text = $"{dgProducts.ItemsSource.Cast<Product>().Count()} из {Products.Count()}";
+            IsSearchNotNull(ProductsForSearch);
+        }
+
+        private void btnPreviousPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (startIndex != 0)
+                startIndex -= Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
+            Pagination();
+        }
+
+        private void btnNextPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (startIndex + Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString()) < Products.Count)
+                startIndex += Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
+            Pagination();
+        }
+
+        private void CheckRole(int roleId)
+        {
+            spButtons.Visibility = DataAccess.GetRole(roleId).Name == "Клиент" ? Visibility.Hidden : Visibility.Visible;
         }
     }
 }
