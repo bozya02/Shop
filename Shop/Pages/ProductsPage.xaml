@@ -40,6 +40,7 @@
             </ComboBox>
 
             <ComboBox x:Name="cbSort" Grid.Column="2" SelectionChanged="cbSort_SelectionChanged" Width="150" Margin="10,0">
+                <ComboBoxItem Content="По умолчанию"/>
                 <ComboBoxItem Content="А-Я"/>
                 <ComboBoxItem Content="Я-А"/>
                 <ComboBoxItem Content="Сначала старые"/>

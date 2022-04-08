@@ -23,7 +23,6 @@ namespace Shop.Windows
         public ShopWindow()
         {
             InitializeComponent();
-
             frame.Navigated += Frame_Navigated;
             frame.NavigationService.Navigate(new Pages.AuthorizationPage());
         }

@@ -28,19 +28,18 @@ namespace Shop.Pages
         private Dictionary<string, Func<Product, object>> Sortings;
 
         private int startIndex;
-        private int countPerPage;
 
         public ProductsPage(int roleId)
         {
             InitializeComponent();
             Products = DataAccess.GetProducts().ToList();
             Units = DataAccess.GetUnits();
-            Units.Add(new Unit { Name = "Все" });
+            Units.Insert(0, new Unit { Name = "Все" });
+            
             cbCountPerPage.SelectedIndex = 0;
-            countPerPage = Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
-
             cbMonth.SelectedIndex = 0;
-            cbUnits.SelectedIndex = Units.Count() - 1;
+            cbSort.SelectedIndex = 0;
+            cbUnits.SelectedIndex = 0;
 
             startIndex = 0;
 
@@ -49,7 +48,8 @@ namespace Shop.Pages
                 { "А-Я", x => x.Name},
                 { "Я-А", x => x.Name},
                 { "Сначала старые", x => x.AddDate},
-                { "Сначала новые", x => x.AddDate}
+                { "Сначала новые", x => x.AddDate},
+                { "По умолчанию", x => x.Id}
             };
 
             this.DataContext = this;
@@ -167,14 +167,6 @@ namespace Shop.Pages
 
         private void cbCountPerPage_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString() != "Все")
-            {
-                countPerPage = Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
-            }
-            else
-            {
-                countPerPage = Products.Count;
-            }
             startIndex = 0;
 
             Apply();
@@ -183,28 +175,23 @@ namespace Shop.Pages
 
         private void Pagination()
         {
-            if (startIndex < ProductsForSearch.Count)
-            {
-                int count = (ProductsForSearch.Count / (countPerPage + startIndex)) > 0 ? countPerPage : ProductsForSearch.Count % countPerPage;
-                var result = ProductsForSearch.GetRange(startIndex, count);
-                dgProducts.ItemsSource = result;
-            }
-
-            tbCount.Text = $"{dgProducts.ItemsSource.Cast<Product>().Count()} из {Products.Count()}";
+            var count = (cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString() == "Все" ? ProductsForSearch.Count : int.Parse((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
+            dgProducts.ItemsSource = ProductsForSearch.Skip(count * startIndex).Take(count);
+            tbCount.Text = $"{dgProducts.ItemsSource.Cast<Product>().Count()} из {ProductsForSearch.Count()}";
             IsSearchNotNull(ProductsForSearch);
         }
 
         private void btnPreviousPage_Click(object sender, RoutedEventArgs e)
         {
             if (startIndex != 0)
-                startIndex -= Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
+                startIndex--;
             Pagination();
         }
 
         private void btnNextPage_Click(object sender, RoutedEventArgs e)
         {
-            if (startIndex + Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString()) < Products.Count)
-                startIndex += Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString());
+            if ((startIndex + 1) * Convert.ToInt32((cbCountPerPage.SelectedItem as ComboBoxItem).Content.ToString()) < ProductsForSearch.Count)
+                startIndex++;
             Pagination();
         }
 
