@@ -41,7 +41,6 @@ namespace Shop.Pages
 
             cbMonth.SelectedIndex = 0;
             cbUnits.SelectedIndex = Units.Count() - 1;
-            cbSort.SelectedIndex = 0;
 
             startIndex = 0;
 
@@ -59,7 +58,7 @@ namespace Shop.Pages
         private void Apply()
         {
             ProductsForSearch = Products.ToList();
-            if (cbMonth.SelectedItem != null && cbUnits.SelectedItem != null && cbSort.SelectedItem != null)
+            if (cbMonth.SelectedItem != null && cbUnits.SelectedItem != null)
             {
                 var unit = cbUnits.SelectedItem as Unit;
                 if (unit.Name != "Все")
@@ -69,15 +68,15 @@ namespace Shop.Pages
                 ProductsForSearch = ProductsForSearch.Where(p => p.Name.ToLower().Contains(text.ToLower()) || p.Description.ToLower().Contains(text.ToLower())).ToList();
 
                 if ((cbMonth.SelectedItem as ComboBoxItem).Content.ToString() != "Все")
-                {
                     ProductsForSearch = ProductsForSearch.Where(p => p.AddDate.Month == DateTime.Now.Month).ToList();
+                if (cbSort.SelectedItem != null)
+                {
+                    var sort = (cbSort.SelectedItem as ComboBoxItem).Content.ToString();
+
+                    ProductsForSearch = ProductsForSearch.OrderBy(Sortings[sort]).ToList();
+                    if (sort == "Я-А" || sort == "Сначала новые")
+                        ProductsForSearch.Reverse();
                 }
-
-                var sort = (cbSort.SelectedItem as ComboBoxItem).Content.ToString();
-
-                ProductsForSearch = ProductsForSearch.OrderBy(Sortings[sort]).ToList();
-                if (sort == "Я-А" || sort == "Сначала новые")
-                    ProductsForSearch.Reverse();
 
                 dgProducts.ItemsSource = ProductsForSearch;
             }

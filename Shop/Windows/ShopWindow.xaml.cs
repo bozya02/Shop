@@ -23,7 +23,25 @@ namespace Shop.Windows
         public ShopWindow()
         {
             InitializeComponent();
+
+            frame.Navigated += Frame_Navigated;
             frame.NavigationService.Navigate(new Pages.AuthorizationPage());
+        }
+
+        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (frame.Content is Pages.AuthorizationPage)
+                spButtons.Visibility = Visibility.Hidden;
+            else if (frame.Content is Pages.RegistrationPage)
+            {
+                spButtons.Visibility = Visibility.Visible;
+                btnGoForward.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                spButtons.Visibility = Visibility.Visible;
+                btnGoForward.Visibility = Visibility.Visible;
+            }
         }
 
         private void btnGoBack_Click(object sender, RoutedEventArgs e)

@@ -157,7 +157,9 @@ namespace Core
 
         public static bool CheckContent(string name, string description)
         {
-            Regex regex = new Regex(@"/^[А-Яа-яA-Za-z\s\-]+$/");
+            Regex regex = new Regex(@"^[А-Яа-яA-Za-z\s\-]+$");
+            bool n = regex.IsMatch(name);
+            bool d = regex.IsMatch(description);
 
             return regex.IsMatch(name) && regex.IsMatch(description);
         }
