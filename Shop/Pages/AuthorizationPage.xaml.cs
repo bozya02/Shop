@@ -21,6 +21,7 @@ namespace Shop.Pages
     /// </summary>
     public partial class AuthorizationPage : Page
     {
+        private int countLoginAttempt = 1;
         public AuthorizationPage()
         {
             InitializeComponent();
@@ -38,17 +39,42 @@ namespace Shop.Pages
             var login = tbLogin.Text;
             var password = pbPassword.Password;
 
-            if (DataAccess.TryLogin(login, password))
+            if (DataAccess.IsLoggingCorrect(login, password) && countLoginAttempt < 3 && Properties.Settings.Default.LastLoginAttempt == DateTime.MinValue)
             {
                 if (cbRemember.IsChecked.GetValueOrDefault())
                     Properties.Settings.Default.Login = login;
                 else
                     Properties.Settings.Default.Login = null;
+                Properties.Settings.Default.LastLoginAttempt = DateTime.MinValue;
+                countLoginAttempt = 1;
                 Properties.Settings.Default.Save();
                 NavigationService.Navigate(new ProductsPage(DataAccess.GetUser(login, password).RoleId));
             }
+            else if (countLoginAttempt == 3 || Properties.Settings.Default.LastLoginAttempt != DateTime.MinValue)
+            {
+                if (Properties.Settings.Default.LastLoginAttempt == DateTime.MinValue)
+                {
+                    Properties.Settings.Default.LastLoginAttempt = DateTime.Now;
+                    MessageBox.Show("3 неверные попытки. Начнем минутную игру", "Ошибка");
+                    Properties.Settings.Default.Save();
+                }
+                else if (DateTime.Now - Properties.Settings.Default.LastLoginAttempt >= TimeSpan.FromSeconds(60))
+                {
+                    countLoginAttempt = 1;
+                    Properties.Settings.Default.LastLoginAttempt = DateTime.MinValue;
+                    Properties.Settings.Default.Save();
+                }
+                else if (DateTime.Now - Properties.Settings.Default.LastLoginAttempt < TimeSpan.FromSeconds(60))
+                {
+                    MessageBox.Show($"В игру осталось играть {Math.Round(60 - (DateTime.Now - Properties.Settings.Default.LastLoginAttempt).TotalSeconds, 2)} секунд", "Предупреждение");
+                }
+                return;
+            }
             else
-                MessageBox.Show("Неверный логин или пароль", "Ошибка");
+            {
+                MessageBox.Show($"Неверный логин или пароль\nОсталось {3 - countLoginAttempt} попытки входа", "Ошибка");
+                countLoginAttempt++;
+            }
         }
     }
 }

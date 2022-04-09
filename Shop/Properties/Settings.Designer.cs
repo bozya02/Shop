@@ -34,5 +34,27 @@ namespace Shop.Properties {
                 this["Login"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastLoginAttempt {
+            get {
+                return ((global::System.DateTime)(this["LastLoginAttempt"]));
+            }
+            set {
+                this["LastLoginAttempt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int attemptsCount {
+            get {
+                return ((int)(this["attemptsCount"]));
+            }
+            set {
+                this["attemptsCount"] = value;
+            }
+        }
     }
 }
