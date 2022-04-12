@@ -33,5 +33,6 @@
             <Button x:Name="btnRegistration" Content="Зарегистрироваться" Click="btnRegistration_Click"/>
             <CheckBox x:Name="cbRemember" Content="Запомнить данные" IsChecked="True"/>
         </StackPanel>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="302,-71,-507,0" VerticalAlignment="Top" Width="605" Height="148" Grid.Column="1" Click="Button_Click"/>
     </Grid>
 </Page>

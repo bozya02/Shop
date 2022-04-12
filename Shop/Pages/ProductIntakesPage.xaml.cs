@@ -29,5 +29,30 @@ namespace Shop.Pages
             ProductIntakes = DataAccess.GetProductIntakes();
             this.DataContext = this;
         }
+
+        private void btnAddIntake_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ProductIntakePage());
+        }
+
+        private void btnEditIntake_Click(object sender, RoutedEventArgs e)
+        {
+            var productIntake = dgProductIntakes.SelectedItem as ProductIntake;
+            if (!IsProductIntakeSelect(productIntake))
+                return;
+            NavigationService.Navigate(new ProductIntakePage(productIntake));
+        }
+
+        private bool IsProductIntakeSelect(ProductIntake productIntake)
+        {
+            if (productIntake == null)
+            {
+                MessageBox.Show($"Поставка не выбрана", "Ошибка");
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }
