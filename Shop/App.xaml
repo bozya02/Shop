@@ -39,7 +39,7 @@
         
         <Style TargetType="DataGrid">
             <Setter Property="FontFamily" Value="Arial"/>
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="16"/>
         </Style>
         
         <Style TargetType="Button">

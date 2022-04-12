@@ -15,18 +15,9 @@ namespace Core
     
     public partial class ShopBozyaEntities : DbContext
     {
-        private static ShopBozyaEntities _context;
         public ShopBozyaEntities()
             : base("name=ShopBozyaEntities")
         {
-        }
-
-        public static ShopBozyaEntities GetContext()
-        {
-            if (_context == null)
-                _context = new ShopBozyaEntities();
-
-            return _context;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

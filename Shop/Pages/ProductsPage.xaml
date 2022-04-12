@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Width="100" Margin="10,0">
+            <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Width="100" Margin="5,0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"/>
@@ -32,23 +32,24 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             
-            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="10" Width="150"/>
+            <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" Margin="5, 10" Width="150"/>
             
-            <ComboBox x:Name="cbMonth" Grid.Column="2" SelectionChanged="cbMonth_SelectionChanged" Width="150" Margin="10,0">
+            <ComboBox x:Name="cbMonth" Grid.Column="2" SelectionChanged="cbMonth_SelectionChanged" Width="150" Margin="5,0">
                 <ComboBoxItem Content="Все"/>
                 <ComboBoxItem Content="Текущий месяц"/>
             </ComboBox>
 
-            <ComboBox x:Name="cbSort" Grid.Column="2" SelectionChanged="cbSort_SelectionChanged" Width="150" Margin="10,0">
+            <ComboBox x:Name="cbSort" Grid.Column="2" SelectionChanged="cbSort_SelectionChanged" Width="150" Margin="5,0">
                 <ComboBoxItem Content="По умолчанию"/>
                 <ComboBoxItem Content="А-Я"/>
                 <ComboBoxItem Content="Я-А"/>
                 <ComboBoxItem Content="Сначала старые"/>
                 <ComboBoxItem Content="Сначала новые"/>
             </ComboBox>
+            <Button x:Name="btnIntakes" Content="Поставки" Margin="5" Click="btnIntakes_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False" FontSize="16">
+        <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" />
                 <DataGridTemplateColumn Header="Фото">

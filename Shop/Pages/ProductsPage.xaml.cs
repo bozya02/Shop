@@ -199,5 +199,10 @@ namespace Shop.Pages
         {
             spButtons.Visibility = DataAccess.GetRole(roleId).Name == "Клиент" ? Visibility.Hidden : Visibility.Visible;
         }
+
+        private void btnIntakes_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ProductIntakesPage());
+        }
     }
 }
