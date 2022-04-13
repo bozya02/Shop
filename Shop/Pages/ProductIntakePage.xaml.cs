@@ -33,8 +33,11 @@ namespace Shop.Pages
             Products = DataAccess.GetProducts();
             Suppliers = DataAccess.GetSuppliers();
             StatusIntakes = DataAccess.GetStatusIntakes();
-
-            dgProducts.ItemsSource = new ObservableCollection<ProductIntakeProduct>();
+            ProductIntake = new ProductIntake
+            {
+                Data = DateTime.Now
+            };
+            cbStatusIntake.IsEnabled = false;
             this.DataContext = this;
         }
 
@@ -43,18 +46,41 @@ namespace Shop.Pages
             InitializeComponent();
             ProductIntake = productIntake;
 
-            Products = DataAccess.GetProducts();
-            cbProducts.ItemsSource = Products;
-            
+            Products = DataAccess.GetProducts();            
             Suppliers = DataAccess.GetSuppliers();
-            cbSupplier.ItemsSource = Suppliers;
+
             cbSupplier.SelectedItem = ProductIntake.Supplier;
 
             StatusIntakes = DataAccess.GetStatusIntakes();
-            cbStatusIntake.ItemsSource = StatusIntakes;
-            cbStatusIntake.SelectedItem = ProductIntake.StatusIntake;
 
+            cbStatusIntake.SelectedItem = ProductIntake.StatusIntake;
+            SetEnable();
             this.DataContext = this;
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            var product = cbProducts.SelectedItem as Product;
+
+            ProductIntake.ProductIntakeProducts.Add(new ProductIntakeProduct {
+                Product = product
+            });
+            dgProducts.Items.Refresh();
+
+            Products.Remove(product);
+        }
+
+        private void SetEnable()
+        {
+            if (ProductIntake.StatusIntake.Name == "Принят")
+            {
+                grid.IsEnabled = false;
+                return;
+            }
+            cbSupplier.IsEnabled = false;
+            cbProducts.IsEnabled = false;
+            btnAdd.IsEnabled = false;
+            dgProducts.IsEnabled = false;
         }
     }
 }

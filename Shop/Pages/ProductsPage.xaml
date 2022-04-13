@@ -23,7 +23,7 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <ComboBox x:Name="cbUnits" ItemsSource="{Binding Units}" SelectionChanged="cbUnits_SelectionChanged" Width="100" Margin="5,0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -47,6 +47,7 @@
                 <ComboBoxItem Content="Сначала новые"/>
             </ComboBox>
             <Button x:Name="btnIntakes" Content="Поставки" Margin="5" Click="btnIntakes_Click"/>
+            <Button x:Name="btnOrders" Content="Заказы" Margin="5" Click="btnOrders_Click"/>
         </StackPanel>
 
         <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Products}" IsReadOnly="True" AutoGenerateColumns="False">

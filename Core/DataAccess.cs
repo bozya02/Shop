@@ -181,5 +181,38 @@ namespace Core
         {
             return new ObservableCollection<ProductIntakeProduct>(ShopBozyaEntities.GetContext().ProductIntakeProducts.Where(c => !c.IsDeleted));
         }
+
+        public static ObservableCollection<Order> GetOrders()
+        {
+            return new ObservableCollection<Order>(ShopBozyaEntities.GetContext().Orders.Where(c => !c.IsDeleted));
+        }
+
+        public static ObservableCollection<ProductOrder> GetProductOrders()
+        {
+            return new ObservableCollection<ProductOrder>(ShopBozyaEntities.GetContext().ProductOrders.Where(c => !c.IsDeleted));
+        }
+
+        public static ObservableCollection<StatusOrder> GetStatusOrders()
+        {
+            return new ObservableCollection<StatusOrder>(ShopBozyaEntities.GetContext().StatusOrders.Where(c => !c.IsDeleted));
+        }
+        
+        public static ObservableCollection<Worker> GetWorkers()
+        {
+            return new ObservableCollection<Worker>(ShopBozyaEntities.GetContext().Workers.Where(c => !c.IsDeleted));
+        }
+
+        public static bool SaveProductIntake(ProductIntake productIntake)
+        {
+            if (GetProductIntakes().Where(p => p.Id == productIntake.Id).Count() == 0)
+            {
+                productIntake.Data = DateTime.Now;
+                ShopBozyaEntities.GetContext().ProductIntakes.Add(productIntake);
+            }
+            else
+                ShopBozyaEntities.GetContext().Products.SingleOrDefault(p => p.Id == productIntake.Id);
+
+            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+        }
     }
 }
