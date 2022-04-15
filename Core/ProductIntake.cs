@@ -21,9 +21,9 @@ namespace Core
         }
     
         public int Id { get; set; }
-        public int SupplierId { get; set; }
-        public decimal TotalAmount { get; set; }
-        public System.DateTime Data { get; set; }
+        public Nullable<int> SupplierId { get; set; }
+        public Nullable<decimal> TotalAmount { get; set; }
+        public Nullable<System.DateTime> Data { get; set; }
         public bool IsDeleted { get; set; }
         public Nullable<int> StatusIntakeId { get; set; }
     

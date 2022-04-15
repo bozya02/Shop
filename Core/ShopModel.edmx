@@ -16,7 +16,7 @@
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AddDate" Type="date" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -56,6 +56,7 @@
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="UnitId" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="date" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductCountry">
@@ -65,15 +66,16 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CountryId" Type="int" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductIntake">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SupplierId" Type="int" Nullable="false" />
-          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Data" Type="date" Nullable="false" />
+          <Property Name="SupplierId" Type="int" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Data" Type="date" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="StatusIntakeId" Type="int" />
         </EntityType>
@@ -276,7 +278,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProductIntake_Supplier">
-          <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
           <End Role="ProductIntake" Type="Self.ProductIntake" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Supplier">
@@ -540,7 +542,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Gender" Relationship="ShopBozyaModel.FK_Client_Gender" FromRole="Client" ToRole="Gender" />
           <NavigationProperty Name="User" Relationship="ShopBozyaModel.FK_Client_User1" FromRole="Client" ToRole="User" />
           <NavigationProperty Name="Orders" Relationship="ShopBozyaModel.FK_Order_Client" FromRole="Client" ToRole="Order" />
@@ -589,6 +591,7 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UnitId" Type="Int32" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Unit" Relationship="ShopBozyaModel.FK_Product_Unit" FromRole="Product" ToRole="Unit" />
           <NavigationProperty Name="ProductCountries" Relationship="ShopBozyaModel.FK_ProductCountry_Product" FromRole="Product" ToRole="ProductCountry" />
@@ -602,6 +605,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CountryId" Type="Int32" Nullable="false" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Country" Relationship="ShopBozyaModel.FK_ProductCountry_Country" FromRole="ProductCountry" ToRole="Country" />
           <NavigationProperty Name="Product" Relationship="ShopBozyaModel.FK_ProductCountry_Product" FromRole="ProductCountry" ToRole="Product" />
         </EntityType>
@@ -610,9 +614,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SupplierId" Type="Int32" Nullable="false" />
-          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="Data" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SupplierId" Type="Int32" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Data" Type="DateTime" Precision="0" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="StatusIntakeId" Type="Int32" />
           <NavigationProperty Name="StatusIntake" Relationship="ShopBozyaModel.FK_ProductIntake_StatusIntake" FromRole="ProductIntake" ToRole="StatusIntake" />
@@ -868,7 +872,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProductIntake_Supplier">
-          <End Type="ShopBozyaModel.Supplier" Role="Supplier" Multiplicity="1" />
+          <End Type="ShopBozyaModel.Supplier" Role="Supplier" Multiplicity="0..1" />
           <End Type="ShopBozyaModel.ProductIntake" Role="ProductIntake" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Supplier">
@@ -970,6 +974,7 @@
             <EntityTypeMapping TypeName="ShopBozyaModel.Product">
               <MappingFragment StoreEntitySet="Product">
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="UnitId" ColumnName="UnitId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -982,6 +987,7 @@
           <EntitySetMapping Name="ProductCountries">
             <EntityTypeMapping TypeName="ShopBozyaModel.ProductCountry">
               <MappingFragment StoreEntitySet="ProductCountry">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

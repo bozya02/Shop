@@ -29,5 +29,31 @@ namespace Shop.Pages
             Orders = DataAccess.GetOrders();
             this.DataContext = this;
         }
+
+        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var order = dgOrders.SelectedItem as Order;
+
+            if (!IsOrderelect(order))
+                return;
+
+            NavigationService.Navigate(new OrderPage(order));
+        }
+
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new OrderPage());
+        }
+
+        private bool IsOrderelect(Order order)
+        {
+            if (order == null)
+            {
+                MessageBox.Show($"Заказ не выбран", "Ошибка");
+                return false;
+            }
+
+            return true;
+        }
     }
 }

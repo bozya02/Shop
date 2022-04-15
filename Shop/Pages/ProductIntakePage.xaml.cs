@@ -26,6 +26,7 @@ namespace Shop.Pages
         public ObservableCollection<Supplier> Suppliers { get; set; }
         public ObservableCollection<StatusIntake> StatusIntakes { get; set; }
         public ProductIntake ProductIntake { get; set; }
+        public List<ProductIntakeProduct> ProductIntakeProducts { get; set; }
         public ProductIntakePage()
         {
             InitializeComponent();
@@ -33,10 +34,14 @@ namespace Shop.Pages
             Products = DataAccess.GetProducts();
             Suppliers = DataAccess.GetSuppliers();
             StatusIntakes = DataAccess.GetStatusIntakes();
+
             ProductIntake = new ProductIntake
             {
                 Data = DateTime.Now
             };
+
+            ProductIntakeProducts = ProductIntake.ProductIntakeProducts.ToList();
+
             cbStatusIntake.IsEnabled = false;
             this.DataContext = this;
         }
@@ -54,7 +59,11 @@ namespace Shop.Pages
             StatusIntakes = DataAccess.GetStatusIntakes();
 
             cbStatusIntake.SelectedItem = ProductIntake.StatusIntake;
+
+            ProductIntakeProducts = ProductIntake.ProductIntakeProducts.ToList();
+
             SetEnable();
+            tbSum.Text = ProductIntake.TotalAmount.ToString();
             this.DataContext = this;
         }
 
@@ -62,8 +71,9 @@ namespace Shop.Pages
         {
             var product = cbProducts.SelectedItem as Product;
 
-            ProductIntake.ProductIntakeProducts.Add(new ProductIntakeProduct {
-                Product = product
+            ProductIntakeProducts.Add(new ProductIntakeProduct {
+                Product = product,
+                PriceUnit = product.Price
             });
             dgProducts.Items.Refresh();
 
@@ -81,6 +91,35 @@ namespace Shop.Pages
             cbProducts.IsEnabled = false;
             btnAdd.IsEnabled = false;
             dgProducts.IsEnabled = false;
+        }
+
+        private void dgProducts_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (this.dgProducts.SelectedItem != null)
+            {
+                (sender as DataGrid).RowEditEnding -= dgProducts_RowEditEnding;
+                //(gridProducts.SelectedItem as IntakeProduct).ProductId = (gridProducts.SelectedItem as IntakeProduct).Product.Id;
+                (sender as DataGrid).CommitEdit();
+                (sender as DataGrid).Items.Refresh();
+
+                decimal sum = 0;
+                foreach (ProductIntakeProduct product in dgProducts.ItemsSource)
+                {
+                    sum += product.Sum;
+                }
+
+                tbSum.Text = sum.ToString();
+                (sender as DataGrid).RowEditEnding += dgProducts_RowEditEnding;
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            ProductIntake.ProductIntakeProducts = ProductIntakeProducts;
+
+            DataAccess.SaveProductIntake(ProductIntake);
+
+            NavigationService.GoBack();
         }
     }
 }

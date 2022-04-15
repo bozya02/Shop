@@ -206,11 +206,23 @@ namespace Core
         {
             if (GetProductIntakes().Where(p => p.Id == productIntake.Id).Count() == 0)
             {
-                productIntake.Data = DateTime.Now;
+                productIntake.StatusIntakeId = 1;
                 ShopBozyaEntities.GetContext().ProductIntakes.Add(productIntake);
             }
             else
                 ShopBozyaEntities.GetContext().Products.SingleOrDefault(p => p.Id == productIntake.Id);
+
+            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+        }
+
+        public static bool SaveOrder(Order order)
+        {
+            if (GetProductIntakes().Where(o => o.Id == order.Id).Count() == 0)
+            {
+                ShopBozyaEntities.GetContext().Orders.Add(order);
+            }
+            else
+                ShopBozyaEntities.GetContext().Orders.SingleOrDefault(o => o.Id == order.Id);
 
             return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
         }

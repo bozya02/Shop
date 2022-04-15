@@ -57,6 +57,8 @@
       <DependentUpon>ShopModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess.cs" />
+    <Compile Include="PartialProductOrder.cs" />
+    <Compile Include="PartialProductIntakeProduct.cs" />
     <Compile Include="Gender.cs">
       <DependentUpon>ShopModel.tt</DependentUpon>
     </Compile>

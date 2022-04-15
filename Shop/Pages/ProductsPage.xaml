@@ -64,6 +64,7 @@
                 <DataGridTextColumn Header="Коммент" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Дата" Binding="{Binding AddDate}"/>
                 <DataGridTextColumn Header="Ед. измерения" Binding="{Binding Unit.Name}"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Price}"/>
 
                 <DataGridTemplateColumn Header="Страны">
                     <DataGridTemplateColumn.CellTemplate>

@@ -21,26 +21,27 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="spId" Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <TextBlock Text="Идентификатор"/>
-            <TextBox x:Name="tbId" Text="{Binding Id}" IsReadOnly="True" Width="200"/>
+            <TextBox x:Name="tbId" Text="{Binding Product.Id}" IsReadOnly="True" Width="200"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <TextBlock Text="Наименование"/>
-            <TextBox x:Name="tbName" Text="{Binding Name}" Width="200"/>
+            <TextBox x:Name="tbName" Text="{Binding Product.Name}" Width="200"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" >
             <TextBlock Text="Комментарий"/>
-            <TextBox x:Name="tbDescription" Text="{Binding Description}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Width="200" Margin="10"/>
+            <TextBox x:Name="tbDescription" Text="{Binding Product.Description}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Width="200" Margin="10"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <TextBlock Text="Eдиница измерения"/>
-            <ComboBox x:Name="cbUnits" Margin="20" ItemsSource="{Binding Unit}" Width="50">
+            <ComboBox x:Name="cbUnits" Margin="20" ItemsSource="{Binding Units}" Width="50">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"/>
@@ -51,20 +52,20 @@
 
         <StackPanel Orientation="Vertical" Grid.RowSpan="5" Grid.Column="0" VerticalAlignment="Center" Margin="5">
             <TextBlock Text="Изображение" Margin="0,20"/>
-            <Image x:Name="imageProduct" Source="{Binding Photo}" Height="150"/>
+            <Image x:Name="imageProduct" Source="{Binding Product.Photo}" Height="150"/>
             <Button x:Name="btnChoicePhoto" Content="Выбрать фото" Click="btnChoicePhoto_Click"/>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.RowSpan="5" Grid.Column="2" VerticalAlignment="Center" Margin="5">
             <TextBlock Text="Страны" Margin="0, 20"/>
-            <ListView x:Name="lvCountries" Height="150" SelectionChanged="lvCountries_SelectionChanged">
+            <ListView x:Name="lvCountries" Height="150" SelectionChanged="lvCountries_SelectionChanged" ItemsSource="{Binding ProductCountries}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" Background="{Binding Color}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ComboBox x:Name="cbCounties" Margin="0,20" SelectionChanged="cbCounties_SelectionChanged">
+            <ComboBox x:Name="cbCounties" Margin="0,20" SelectionChanged="cbCounties_SelectionChanged" ItemsSource="{Binding Countries}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" Background="{Binding Color}"/>
@@ -73,6 +74,11 @@
             </ComboBox>
         </StackPanel>
 
-        <Button x:Name="btnComplete" Content="Сохранить" Grid.Column="1" Grid.Row="4" Click="btnComplete_Click"/>
+        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Text="Цена"/>
+            <TextBox x:Name="tbPrice" Text="{Binding Product.Price}" Width="200"/>
+        </StackPanel>
+        
+        <Button x:Name="btnComplete" Content="Сохранить" Grid.Column="1" Grid.Row="5" Click="btnComplete_Click" Padding="5"/>
     </Grid>
 </Page>

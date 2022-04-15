@@ -45,7 +45,7 @@ namespace Shop.Pages
             cbUnits.ItemsSource = Units;
 
             spId.Visibility = Visibility.Hidden;
-            this.DataContext = Product;
+            this.DataContext = this;
         }
 
         public ProductPage(Product product)
@@ -64,7 +64,7 @@ namespace Shop.Pages
             cbUnits.ItemsSource = Units;
             cbUnits.SelectedItem = Product.Unit;
 
-            this.DataContext = Product;
+            this.DataContext = this;
         }
 
         private void FillCountries()
