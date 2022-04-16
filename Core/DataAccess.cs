@@ -10,6 +10,8 @@ namespace Core
 {
     public static class DataAccess
     {
+        public delegate void NewItemAddedDeledate();
+        public static event NewItemAddedDeledate NewItemAddedEvent;
         public static ObservableCollection<User> GetUsers()
         {
             return new ObservableCollection<User>(ShopBozyaEntities.GetContext().Users.Where(u => !u.IsDeleted));
@@ -80,7 +82,7 @@ namespace Core
             return new ObservableCollection<Product>(ShopBozyaEntities.GetContext().Products.Where(p => !p.IsDeleted));
         }
 
-        public static bool SaveProduct(Product product)
+        public static void SaveProduct(Product product)
         {
             if (GetProducts().Where(p => p.Id == product.Id).Count() == 0)
             {
@@ -90,7 +92,8 @@ namespace Core
             else
                 ShopBozyaEntities.GetContext().Products.SingleOrDefault(p => p.Id == product.Id);
 
-            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+            ShopBozyaEntities.GetContext().SaveChanges();
+            NewItemAddedEvent?.Invoke();
         }
 
         public static bool SaveProductCountries(int productId, List<Country> countries)

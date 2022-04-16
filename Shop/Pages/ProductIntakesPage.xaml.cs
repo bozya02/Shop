@@ -28,6 +28,7 @@ namespace Shop.Pages
             InitializeComponent();
             ProductIntakes = DataAccess.GetProductIntakes();
             this.DataContext = this;
+            CheckRole(App.User.RoleId);
         }
 
         private void btnAddIntake_Click(object sender, RoutedEventArgs e)
@@ -52,6 +53,20 @@ namespace Shop.Pages
             }
 
             return true;
+        }
+
+        private void CheckRole(int roleId)
+        {
+            if (DataAccess.GetRole(roleId).Name == "Кладовщик")
+            {
+                btnAddIntake.Visibility = Visibility.Visible;
+                btnEditIntake.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                btnAddIntake.Visibility = Visibility.Hidden;
+                btnEditIntake.Visibility = Visibility.Visible;
+            }
         }
 
     }

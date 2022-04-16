@@ -48,7 +48,8 @@ namespace Shop.Pages
                 Properties.Settings.Default.LastLoginAttempt = DateTime.MinValue;
                 countLoginAttempt = 1;
                 Properties.Settings.Default.Save();
-                NavigationService.Navigate(new ProductsPage(DataAccess.GetUser(login, password).RoleId));
+                App.User = DataAccess.GetUser(login, password);
+                NavigationService.Navigate(new ProductsPage());
             }
             else if (countLoginAttempt == 3 || Properties.Settings.Default.LastLoginAttempt != DateTime.MinValue)
             {

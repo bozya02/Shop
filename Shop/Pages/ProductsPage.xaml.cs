@@ -29,7 +29,7 @@ namespace Shop.Pages
 
         private int startIndex;
 
-        public ProductsPage(int roleId)
+        public ProductsPage()
         {
             InitializeComponent();
             Products = DataAccess.GetProducts().ToList();
@@ -53,8 +53,19 @@ namespace Shop.Pages
             };
 
             this.DataContext = this;
-            CheckRole(roleId);
+            CheckRole(App.User.RoleId);
+
+            DataAccess.NewItemAddedEvent += DataAccess_NewItemAddedEvent;
         }
+
+        private void DataAccess_NewItemAddedEvent()
+        {
+            Products = DataAccess.GetProducts().ToList();
+            Apply();
+
+            dgProducts.Items.Refresh();
+        }
+
         private void Apply()
         {
             ProductsForSearch = Products.ToList();
