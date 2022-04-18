@@ -27,6 +27,16 @@ namespace Core
             return GetUsers().Where(user => user.Login == login && user.Password == password).FirstOrDefault();
         }
 
+        public static Worker GetWorker(User user)
+        {
+            return ShopBozyaEntities.GetContext().Workers.FirstOrDefault(w => w.UserId == user.Id);
+        }
+
+        public static Client GetClient(User user)
+        {
+            return ShopBozyaEntities.GetContext().Clients.FirstOrDefault(c => c.UserId == user.Id);
+        }
+
         public static bool IsLoggingCorrect(string login, string password)
         {
             return GetUser(login, password) != null;
@@ -45,7 +55,18 @@ namespace Core
             return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
         }
 
+        public static bool CreateClient(User user)
+        {
+            var client = new Client
+            {
+                User = user,
+                AddDate = DateTime.Now,
+                UserId = user.Id
+            };
 
+            ShopBozyaEntities.GetContext().Clients.Add(client);
+            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+        }
 
         public static bool CheckLogin(string login)
         {
@@ -179,7 +200,12 @@ namespace Core
         {
             return new ObservableCollection<StatusIntake>(ShopBozyaEntities.GetContext().StatusIntakes.Where(c => !c.IsDeleted));
         }
-        
+
+        public static StatusIntake GetStatusIntake(int id)
+        {
+            return GetStatusIntakes().FirstOrDefault(s => s.Id == id);
+        }
+
         public static ObservableCollection<ProductIntakeProduct> GetProductIntakeProducts()
         {
             return new ObservableCollection<ProductIntakeProduct>(ShopBozyaEntities.GetContext().ProductIntakeProducts.Where(c => !c.IsDeleted));
@@ -188,6 +214,20 @@ namespace Core
         public static ObservableCollection<Order> GetOrders()
         {
             return new ObservableCollection<Order>(ShopBozyaEntities.GetContext().Orders.Where(c => !c.IsDeleted));
+        }
+
+        public static List<Order> GetOrders(User user)
+        {
+            if (user.RoleId == 3)
+            {
+                var client = GetClient(user);
+                return GetOrders().Where(o => o.ClientId == client.Id).ToList();
+            }
+            else
+            {
+                var worker = GetWorker(user);
+                return GetOrders().Where(w => w.WorkerId == worker.Id || w.WorkerId == null).ToList();
+            }
         }
 
         public static ObservableCollection<ProductOrder> GetProductOrders()
@@ -205,20 +245,21 @@ namespace Core
             return new ObservableCollection<Worker>(ShopBozyaEntities.GetContext().Workers.Where(c => !c.IsDeleted));
         }
 
-        public static bool SaveProductIntake(ProductIntake productIntake)
+        public static void SaveProductIntake(ProductIntake productIntake)
         {
             if (GetProductIntakes().Where(p => p.Id == productIntake.Id).Count() == 0)
             {
-                productIntake.StatusIntakeId = 1;
                 ShopBozyaEntities.GetContext().ProductIntakes.Add(productIntake);
             }
             else
                 ShopBozyaEntities.GetContext().Products.SingleOrDefault(p => p.Id == productIntake.Id);
 
-            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+            Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+
+            NewItemAddedEvent?.Invoke();
         }
 
-        public static bool SaveOrder(Order order)
+        public static void SaveOrder(Order order)
         {
             if (GetProductIntakes().Where(o => o.Id == order.Id).Count() == 0)
             {
@@ -227,7 +268,8 @@ namespace Core
             else
                 ShopBozyaEntities.GetContext().Orders.SingleOrDefault(o => o.Id == order.Id);
 
-            return Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+            Convert.ToBoolean(ShopBozyaEntities.GetContext().SaveChanges());
+            NewItemAddedEvent?.Invoke();
         }
     }
 }

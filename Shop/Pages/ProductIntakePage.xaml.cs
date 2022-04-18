@@ -37,9 +37,13 @@ namespace Shop.Pages
 
             ProductIntake = new ProductIntake
             {
-                Data = DateTime.Now
+                Data = DateTime.Now,
+                StatusIntakeId = 2,
+                StatusIntake = DataAccess.GetStatusIntake(2)
             };
 
+            cbStatusIntake.SelectedItem = ProductIntake.StatusIntake;
+            
             ProductIntakeProducts = ProductIntake.ProductIntakeProducts.ToList();
 
             cbStatusIntake.IsEnabled = false;
@@ -116,6 +120,9 @@ namespace Shop.Pages
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             ProductIntake.ProductIntakeProducts = ProductIntakeProducts;
+            ProductIntake.SupplierId = (cbSupplier.SelectedItem as Supplier).Id;
+            ProductIntake.TotalAmount = Decimal.Parse(tbSum.Text);
+            ProductIntake.StatusIntakeId = (cbStatusIntake.SelectedItem as StatusIntake).Id;
 
             DataAccess.SaveProductIntake(ProductIntake);
 

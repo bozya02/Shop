@@ -29,6 +29,16 @@ namespace Shop.Pages
             ProductIntakes = DataAccess.GetProductIntakes();
             this.DataContext = this;
             CheckRole(App.User.RoleId);
+
+            DataAccess.NewItemAddedEvent += DataAccess_NewItemAddedEvent;
+        }
+
+        private void DataAccess_NewItemAddedEvent()
+        {
+            ProductIntakes = DataAccess.GetProductIntakes();
+
+            dgProductIntakes.ItemsSource = ProductIntakes;
+            dgProductIntakes.Items.Refresh();
         }
 
         private void btnAddIntake_Click(object sender, RoutedEventArgs e)

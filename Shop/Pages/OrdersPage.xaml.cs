@@ -22,12 +22,22 @@ namespace Shop.Pages
     /// </summary>
     public partial class OrdersPage : Page
     {
-        public ObservableCollection<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; }
         public OrdersPage()
         {
             InitializeComponent();
-            Orders = DataAccess.GetOrders();
+            Orders = DataAccess.GetOrders(App.User);
             this.DataContext = this;
+
+            DataAccess.NewItemAddedEvent += DataAccess_NewItemAddedEvent;
+        }
+
+        private void DataAccess_NewItemAddedEvent()
+        {
+            Orders = DataAccess.GetOrders(App.User);
+
+            dgOrders.ItemsSource = Orders;
+            dgOrders.Items.Refresh();
         }
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)
