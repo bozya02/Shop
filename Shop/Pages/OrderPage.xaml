@@ -41,6 +41,8 @@
             </ComboBox>
         </StackPanel>
 
+        <Button x:Name="btnPay" Content="Оплатить" Grid.Row="1" Grid.Column="4" Margin="5" Click="btnPay_Click"/>
+
         <DataGrid x:Name="dgProducts" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding ProductOrders}" CanUserAddRows="False" AutoGenerateColumns="False"
                   IsReadOnly="False" RowEditEnding="dgProducts_RowEditEnding">
             <DataGrid.Columns>

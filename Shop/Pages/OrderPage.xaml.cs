@@ -30,16 +30,22 @@ namespace Shop.Pages
         {
             InitializeComponent();
 
+            StatusOrders = DataAccess.GetStatusOrders();
+            
             Order = new Order
             {
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                StatusOrderId = 1,
+                StatusOrder = DataAccess.GetStatusOrder(1)
             };
+
             ProductOrders = Order.ProductOrders.ToList();
+            cbStatusOrder.SelectedItem = Order.StatusOrder;
 
             Products = DataAccess.GetProducts();
-            StatusOrders = DataAccess.GetStatusOrders();
 
             this.DataContext = this;
+            btnPay.Visibility = Visibility.Hidden;
             
         }
 
@@ -56,6 +62,7 @@ namespace Shop.Pages
 
             this.DataContext = this;
             tbSum.Text = ProductOrders.Sum(o => o.Sum).ToString();
+            btnPay.Visibility = Visibility.Hidden;
             SetEnable();
         }
 
@@ -64,7 +71,6 @@ namespace Shop.Pages
             if (this.dgProducts.SelectedItem != null)
             {
                 (sender as DataGrid).RowEditEnding -= dgProducts_RowEditEnding;
-                //(gridProducts.SelectedItem as IntakeProduct).ProductId = (gridProducts.SelectedItem as IntakeProduct).Product.Id;
                 (sender as DataGrid).CommitEdit();
                 (sender as DataGrid).Items.Refresh();
 
@@ -98,6 +104,16 @@ namespace Shop.Pages
         {
             Order.ProductOrders = ProductOrders;
 
+            if (App.User.RoleId == 3)
+            {
+                Order.Client = DataAccess.GetClient(App.User);
+            }
+            else
+            {
+                Order.Worker = DataAccess.GetWorker(App.User);
+                Order.StatusOrder = cbStatusOrder.SelectedItem as StatusOrder;
+            }
+
             DataAccess.SaveOrder(Order);
 
             NavigationService.GoBack();
@@ -105,9 +121,33 @@ namespace Shop.Pages
 
         private void SetEnable()
         {
-            if (Order.StatusOrder.Name == "Новый")
+            if (Order.StatusOrder.Name == "Отклонен" || Order.StatusOrder.Name == "Готов")
+            {
+                grid.IsEnabled = false;
                 return;
-            grid.IsEnabled = false;
+            }
+            else if (Order.StatusOrder.Name != "Новый")
+            {
+                tbDate.IsEnabled = false;
+                cbProducts.IsEnabled = false;
+                dgProducts.IsEnabled = false;
+                btnAdd.IsEnabled = false;
+            }
+
+            if (App.User.RoleId == 3)
+            {
+                cbStatusOrder.IsEnabled = false;
+                if (Order.StatusOrder == DataAccess.GetStatusOrders().FirstOrDefault(s => s.Name == "К оплате"))
+                {
+                    btnPay.Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void btnPay_Click(object sender, RoutedEventArgs e)
+        {
+            Order.StatusOrder = DataAccess.GetStatusOrders().FirstOrDefault(s => s.Name == "Оплачен");
+            btnPay.Visibility = Visibility.Hidden;
         }
     }
 }

@@ -208,9 +208,15 @@ namespace Shop.Pages
 
         private void CheckRole(int roleId)
         {
-            var visible = DataAccess.GetRole(roleId).Name == "Клиент" ? Visibility.Hidden : Visibility.Visible;
-            spButtons.Visibility = visible;
-            btnIntakes.Visibility = visible;
+            if (DataAccess.GetRole(roleId).Name == "Клиент")
+            {
+                spButtons.Visibility = Visibility.Hidden;
+                btnIntakes.Visibility = Visibility.Hidden;
+            }
+            else if (DataAccess.GetRole(roleId).Name == "Кладовщик")
+            {
+                btnOrders.Visibility = Visibility.Hidden;
+            }
         }
 
         private void btnIntakes_Click(object sender, RoutedEventArgs e)

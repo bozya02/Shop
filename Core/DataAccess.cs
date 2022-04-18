@@ -239,7 +239,12 @@ namespace Core
         {
             return new ObservableCollection<StatusOrder>(ShopBozyaEntities.GetContext().StatusOrders.Where(c => !c.IsDeleted));
         }
-        
+
+        public static StatusOrder GetStatusOrder(int id)
+        {
+            return GetStatusOrders().FirstOrDefault(s => s.Id == id);
+        }
+
         public static ObservableCollection<Worker> GetWorkers()
         {
             return new ObservableCollection<Worker>(ShopBozyaEntities.GetContext().Workers.Where(c => !c.IsDeleted));

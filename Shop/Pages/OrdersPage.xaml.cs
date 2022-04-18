@@ -44,7 +44,7 @@ namespace Shop.Pages
         {
             var order = dgOrders.SelectedItem as Order;
 
-            if (!IsOrderelect(order))
+            if (!IsOrderSelect(order))
                 return;
 
             NavigationService.Navigate(new OrderPage(order));
@@ -55,7 +55,7 @@ namespace Shop.Pages
             NavigationService.Navigate(new OrderPage());
         }
 
-        private bool IsOrderelect(Order order)
+        private bool IsOrderSelect(Order order)
         {
             if (order == null)
             {
