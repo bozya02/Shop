@@ -266,7 +266,7 @@ namespace Core
 
         public static void SaveOrder(Order order)
         {
-            if (GetProductIntakes().Where(o => o.Id == order.Id).Count() == 0)
+            if (GetOrders().Where(o => o.Id == order.Id).Count() == 0)
             {
                 ShopBozyaEntities.GetContext().Orders.Add(order);
             }

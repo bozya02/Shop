@@ -45,6 +45,7 @@ namespace Shop.Pages
             Products = DataAccess.GetProducts();
 
             this.DataContext = this;
+            SetEnable();
             btnPay.Visibility = Visibility.Hidden;
             
         }
@@ -92,7 +93,7 @@ namespace Shop.Pages
             ProductOrders.Add(new ProductOrder
             {
                 Product = product,
-                Order = Order
+                ProductId = product.Id
             });
 
             dgProducts.Items.Refresh();
@@ -111,8 +112,8 @@ namespace Shop.Pages
             else
             {
                 Order.Worker = DataAccess.GetWorker(App.User);
-                Order.StatusOrder = cbStatusOrder.SelectedItem as StatusOrder;
             }
+            Order.StatusOrder = cbStatusOrder.SelectedItem as StatusOrder;
 
             DataAccess.SaveOrder(Order);
 
